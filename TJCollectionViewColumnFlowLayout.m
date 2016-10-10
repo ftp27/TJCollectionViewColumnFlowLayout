@@ -13,7 +13,6 @@
 @property (nonatomic, strong) NSMutableArray *itemsAttributes;
 @property (nonatomic, strong) NSMutableArray *headersAttributes;
 @property (nonatomic, strong) NSMutableArray *footersAttributes;
-@property (nonatomic, assign) CGFloat        maxX;
 
 @end
 
@@ -104,10 +103,23 @@
 
         for (NSInteger itemIndex = 0; itemIndex < itemCount; itemIndex++)
         {
-            NSIndexPath                      *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:section];
-            CGSize                           size = [self.delegate collectionView:self.collectionView layout:self sizeForItemAtIndexPath:indexPath];
-            UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:section];
+            CGSize size = [self.delegate collectionView:self.collectionView layout:self sizeForItemAtIndexPath:indexPath];
+            
+            if (currentY + size.height > (self.collectionView.bounds.size.height - self.collectionView.contentInset.top - self.collectionView.contentInset.bottom)) {
+                currentColumn += 1;
+                currentY = sectionInsets.top;
+                
+                if (itemIndex == 0) {
+                    [self.headersAttributes removeObject:attributes];
+                    attributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
+                    attributes.frame = CGRectMake(sectionInsets.left + (currentColumn * headerSize.width), sectionInsets.top + currentY, headerSize.width, headerSize.height);
+                    currentY += headerSize.height;
+                    [self.headersAttributes addObject:attributes];
+                }
+            }
 
+            UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
             attributes.frame = CGRectMake(sectionInsets.left + (currentColumn * size.width), currentY, size.width, size.height);
 
             self.maxX = fmaxf(attributes.frame.origin.x + attributes.frame.size.width, self.maxX);

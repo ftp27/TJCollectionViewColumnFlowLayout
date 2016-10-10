@@ -24,5 +24,7 @@
 @property (nonatomic) CGSize       headerReferenceSize;
 @property (nonatomic) CGSize       footerReferenceSize;
 @property (nonatomic) UIEdgeInsets sectionInset;
-
+    
+@property (nonatomic, assign) CGFloat        maxX;
+    
 @end
