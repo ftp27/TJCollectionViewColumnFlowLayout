@@ -26,5 +26,6 @@
 @property (nonatomic) UIEdgeInsets sectionInset;
     
 @property (nonatomic, assign) CGFloat        maxX;
+@property (nonatomic, assign) NSInteger      columnsAmount;
     
 @end

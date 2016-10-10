@@ -55,6 +55,7 @@
 {
     CGFloat         currentY = 0;
     NSInteger       currentColumn = 0;
+    self.columnsAmount = 0;
     NSMutableArray  *currentColumnAttributes = [[NSMutableArray alloc] init];
 
     self.maxX = 0;
@@ -168,6 +169,8 @@
             [currentColumnAttributes addObjectsFromArray:sectionAttributes];
         }
     };
+    
+    self.columnsAmount = currentColumn+1;
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
